@@ -5,10 +5,9 @@
 # * 2 peers in 2 orgs
 # * cli for testing
 
-version: '2.0'
+version: '0.1'
 
 services:
-
   orderer.example.com:  # There  can be multiple orderers
     image: hyperledger/fabric-orderer
     environment:
@@ -104,11 +103,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     #volumes:
     #    - /var/run/:/host/var/run/
-    command: peer node start
     container_name: peer0.org2.example.com
     hostname: peer0.org2.example.com
-    environment:
-      
     volumes:
         - ./e2e_cli/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
     ports:
