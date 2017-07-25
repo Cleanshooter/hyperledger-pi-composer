@@ -9,7 +9,7 @@ version: '3.0'
 
 services:
   orderer:  # There  can be multiple orderers
-    image: hyperledger/fabric-orderer
+    image: jmotacek/fabric-orderer
     environment:
       - ORDERER_GENERAL_LOGLEVEL=DEBUG
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
@@ -35,7 +35,7 @@ services:
     command: orderer start
 
   peer0_org1:
-    image: hyperledger/fabric-peer
+    image: jmotacek/fabric-peer
     environment:
       - CORE_PEER_ID=peer0_org1
       - CORE_PEER_ADDRESS=peer0_org1:7051
@@ -75,7 +75,7 @@ services:
     command: peer node start
 
   peer0_org2:
-    image: hyperledger/fabric-peer
+    image: jmotacek/fabric-peer
     environment:
       - CORE_PEER_ID=peer0_org2
       - CORE_PEER_ADDRESS=peer0_org2:7051
@@ -116,7 +116,7 @@ services:
   cli:
     container_name: fabric-cli
     hostname: fabric-cli
-    image: hyperledger/fabric-tools
+    image: jmotacek/fabric-tools
     tty: true
     environment:
       #- GOPATH=/opt/gopath
@@ -144,7 +144,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: bash -c 'while true; do sleep 20170504; done'
 
-#networks:
-#  default:
-#    external:
-#      name: hyperledger_fabric
+networks:
+  default:
+    external:
+      name: hyperledger_fabric
