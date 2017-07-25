@@ -12,7 +12,7 @@ else
 fi
 
 CHANNEL_NAME="$1"
-: ${CHANNEL_NAME:="businesschannel"}
+: ${CHANNEL_NAME:="testchannel"}
 : ${TIMEOUT:="60"}
 COUNTER=0
 MAX_RETRY=5
@@ -30,7 +30,7 @@ verifyResult () {
 }
 
 createChannel() {
-	peer channel create -o orderer.example.com:7050 -c ${CHANNEL_NAME} -f ./channel-artifacts/channel.tx >&log.txt
+	peer channel create -o orderer:7050 -c ${CHANNEL_NAME} -f ./channel-artifacts/channel.tx >&log.txt
 	res=$?
 	cat log.txt
 
@@ -49,7 +49,7 @@ createChannel() {
 
 joinChannel () {
     echo_b "===================== PEER0 joined on the channel \"$CHANNEL_NAME\" ===================== "
-	peer channel join -b ${CHANNEL_NAME}.block -o orderer.example.com:7050 >&log.txt
+	peer channel join -b ${CHANNEL_NAME}.block -o orderer:7050 >&log.txt
 	res=$?
 	cat log.txt
 	if [ $res -ne 0 -a $COUNTER -lt $MAX_RETRY ]; then
@@ -64,7 +64,7 @@ joinChannel () {
 }
 
 updateAnchorPeers() {
-    peer channel create -o orderer.example.com:7050 -c ${CHANNEL_NAME} -f ./channel-artifacts/Org1MSPanchors.tx >&log.txt
+    peer channel create -o orderer:7050 -c ${CHANNEL_NAME} -f ./channel-artifacts/Org1MSPanchors.tx >&log.txt
     res=$?
     cat log.txt
     verifyResult $res "Anchor peer update failed"
@@ -73,7 +73,7 @@ updateAnchorPeers() {
 }
 
 installChaincode () {
-	peer chaincode install -n mycc -v 1.0 -p ${CC_PATH} -o orderer.example.com:7050 >&log.txt
+	peer chaincode install -n mycc -v 1.0 -p ${CC_PATH} -o orderer:7050 >&log.txt
 	res=$?
 	cat log.txt
         verifyResult $res "Chaincode installation on remote peer0 has Failed"
@@ -83,11 +83,11 @@ installChaincode () {
 
 instantiateChaincode () {
 	local starttime=$(date +%s)
-	peer chaincode instantiate -o orderer.example.com:7050 -C ${CHANNEL_NAME} -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR ('Org1MSP.member')" >&log.txt
+	peer chaincode instantiate -o orderer:7050 -C ${CHANNEL_NAME} -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR ('Org1MSP.member')" >&log.txt
 	res=$?
 	cat log.txt
-	verifyResult $res "Chaincode instantiation on pee0.org1 on channel '$CHANNEL_NAME' failed"
-	echo_g "=========== Chaincode Instantiation on peer0.org1 on channel '$CHANNEL_NAME' is successful ========== "
+	verifyResult $res "Chaincode instantiation on pee0_org1 on channel '$CHANNEL_NAME' failed"
+	echo_g "=========== Chaincode Instantiation on peer0_org1 on channel '$CHANNEL_NAME' is successful ========== "
 	echo_b "Instantiate spent $(($(date +%s)-starttime)) secs"
 	echo
 }
@@ -99,7 +99,7 @@ chaincodeQuery () {
   while test "$(($(date +%s)-starttime))" -lt "$TIMEOUT" -a $rc -ne 0
   do
      sleep 3
-     echo_b "Attempting to Query peer0.org1 ...$(($(date +%s)-starttime)) secs"
+     echo_b "Attempting to Query peer0_org1 ...$(($(date +%s)-starttime)) secs"
      peer chaincode query -C ${CHANNEL_NAME} -n mycc -c '{"Args":["query","a"]}' >&log.txt
      test $? -eq 0 && VALUE=$(cat log.txt | awk '/Query Result/ {print $NF}')
      test "$VALUE" = "$1" && let rc=0
@@ -107,10 +107,10 @@ chaincodeQuery () {
   echo
   cat log.txt
   if test $rc -eq 0 ; then
-	echo_g "===================== Query on peer0.org1 on channel '$CHANNEL_NAME' is successful ===================== "
+	echo_g "===================== Query on peer0_org1 on channel '$CHANNEL_NAME' is successful ===================== "
 
   else
-	echo_r "!!!!!!!!!!!!!!! Query result on peer0.org1 is INVALID !!!!!!!!!!!!!!!!"
+	echo_r "!!!!!!!!!!!!!!! Query result on peer0_org1 is INVALID !!!!!!!!!!!!!!!!"
         echo_r "================== ERROR !!! FAILED to execute MVE test =================="
 	echo
   fi
