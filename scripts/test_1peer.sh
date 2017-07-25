@@ -12,7 +12,7 @@ else
 fi
 
 CHANNEL_NAME="$1"
-: ${CHANNEL_NAME:="testchannel"}
+: ${CHANNEL_NAME:="businesschannel"}
 : ${TIMEOUT:="60"}
 COUNTER=0
 MAX_RETRY=5
@@ -117,7 +117,7 @@ chaincodeQuery () {
 }
 
 chaincodeInvoke () {
-	peer chaincode invoke -o orderer.example.com:7050 -C ${CHANNEL_NAME} -n mycc -c '{"Args":["invoke","a","b","10"]}' >&log.txt
+	peer chaincode invoke -o orderer:7050 -C ${CHANNEL_NAME} -n mycc -c '{"Args":["invoke","a","b","10"]}' >&log.txt
 	res=$?
 	cat log.txt
 	verifyResult $res "Invoke execution on peer0.org1 failed "
