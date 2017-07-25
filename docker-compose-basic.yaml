@@ -25,8 +25,8 @@ services:
       - ORDERER_GENERAL_TLS_ENABLED=false
     expose:
       - "7050"  #
-    container_name: orderer.example.com
-    hostname: orderer.example.com
+    container_name: orderer
+    hostname: orderer
     ports:
       - "7050:7050"
     volumes:
@@ -37,10 +37,10 @@ services:
   peer0.org1.example.com:
     image: hyperledger/fabric-peer
     environment:
-      - CORE_PEER_ID=peer0.org1.example.com
-      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
+      - CORE_PEER_ID=peer0_org1
+      - CORE_PEER_ADDRESS=peer0_org1:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0_org1:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0_org1:7051
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_ADDRESSAUTODETECT=false
       - CORE_LOGGING_LEVEL=DEBUG
@@ -64,8 +64,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     #volumes:
     #    - /var/run/:/host/var/run/
-    container_name: peer0.org1.example.com
-    hostname: peer0.org1.example.com
+    container_name: peer0_org1
+    hostname: peer0_org1
     volumes:
         - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
     ports:
@@ -77,11 +77,11 @@ services:
   peer0.org2.example.com:
     image: hyperledger/fabric-peer
     environment:
-      - CORE_PEER_ID=peer0.org2.example.com
-      - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
-      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org2.example.com:7052
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
+      - CORE_PEER_ID=peer0_org2
+      - CORE_PEER_ADDRESS=peer0_org2:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0_org2:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0_org2:7052
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0_org2:7051
       - CORE_PEER_LOCALMSPID=Org2MSP
       - CORE_PEER_ADDRESSAUTODETECT=false
       - CORE_LOGGING_LEVEL=DEBUG
@@ -103,8 +103,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     #volumes:
     #    - /var/run/:/host/var/run/
-    container_name: peer0.org2.example.com
-    hostname: peer0.org2.example.com
+    container_name: peer0_org2
+    hostname: peer0_org2
     volumes:
         - ./e2e_cli/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
     ports:
@@ -122,7 +122,7 @@ services:
       #- GOPATH=/opt/gopath
       - CORE_PEER_ID=fabric-cli
       - CORE_LOGGING_LEVEL=DEBUG
-      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051 # default to operate on peer0.org1
+      - CORE_PEER_ADDRESS=peer0_org1:7051 # default to operate on peer0.org1
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_TLS_ENABLED=false  
       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
@@ -134,13 +134,13 @@ services:
         - ./e2e_cli/configtx.yaml:/etc/hyperledger/fabric/configtx.yaml
         - ./e2e_cli/crypto-config.yaml:/etc/hyperledger/fabric/crypto-config.yaml
     depends_on:
-      - orderer.example.com
-      - peer0.org1.example.com
-      - peer0.org2.example.com
+      - orderer
+      - peer0_org1
+      - peer0_org2
     links:
-      - orderer.example.com
-      - peer0.org1.example.com
-      - peer0.org2.example.com
+      - orderer
+      - peer0_org1
+      - peer0_org2
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: bash -c 'while true; do sleep 20170504; done'
 
