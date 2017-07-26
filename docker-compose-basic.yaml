@@ -31,7 +31,9 @@ services:
     ports:
       - "7050:7050"
     networks:
-      - hyperledger-fabric
+      hyperledger-fabric:
+        aliases:
+          - orderer.example.com
     volumes:
     - /home/jmotacek/hyperledger-pi-composer/e2e_cli/channel-artifacts/orderer.genesis.block:/var/hyperledger/orderer/orderer.genesis.block
     - /home/jmotacek/hyperledger-pi-composer/e2e_cli/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
@@ -40,10 +42,10 @@ services:
   peer0_org1:
     image: jmotacek/fabric-peer
     environment:
-      - CORE_PEER_ID=peer0_org1
-      - CORE_PEER_ADDRESS=peer0_org1:7051
-      - CORE_PEER_CHAINCODELISTENADDRESS=peer0_org1:7052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0_org1:7051
+      - CORE_PEER_ID=peer0.org1.example.com
+      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_ADDRESSAUTODETECT=false
       - CORE_LOGGING_LEVEL=DEBUG
@@ -69,14 +71,16 @@ services:
       - /home/jmotacek/hyperledger-pi-composer/e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
     #volumes:
     #    - /var/run/:/host/var/run/
-    container_name: peer0_org1
+    container_name: peer0.org1.example.com
     hostname: peer0.org1.example.com
     ports:
       - 7051:7051
       - 7052:7052
       - 7053:7053
     networks:
-      - hyperledger-fabric
+      hyperledger-fabric:
+        aliases:
+          - peer0.org1.example.com
     command: peer node start
 
   peer0_org2:
@@ -106,7 +110,9 @@ services:
       - "7056"  # tCAP
       - "7057"  # eCAA
     networks:
-      - hyperledger-fabric
+      hyperledger-fabric:
+        aliases:
+          - peer0.org2.example.com
     volumes: # docker.sock is mapped as the default CORE_VM_ENDPOINT
       - /var/run/docker.sock:/var/run/docker.sock
       - /home/jmotacek/hyperledger-pi-composer/e2e_cli/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
