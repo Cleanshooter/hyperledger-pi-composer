@@ -154,7 +154,7 @@ services:
       - peer0_org1
       - peer0_org2
     networks:
-      - hyperledger-fabric:
+      hyperledger-fabric:
         aliases:
           - cli.example.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
