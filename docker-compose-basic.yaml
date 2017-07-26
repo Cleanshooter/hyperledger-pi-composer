@@ -86,8 +86,8 @@ services:
   peer0_org2:
     image: jmotacek/fabric-peer
     environment:
-      - CORE_PEER_ID=peer0_org2
-      - CORE_PEER_ADDRESS=peer0_org2:7051
+      - CORE_PEER_ID=peer0.org2.example.com
+      - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
       - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org2.example.com:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0_org2:7051
@@ -154,7 +154,9 @@ services:
       - peer0_org1
       - peer0_org2
     networks:
-      - hyperledger-fabric
+      hyperledger-fabric:
+        aliases:
+          - fabric-cli.example.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: bash -c 'while true; do sleep 20170504; done'
 
