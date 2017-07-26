@@ -126,7 +126,7 @@ services:
 
   cli:
     container_name: fabric-cli
-    hostname: fabric-cli
+    hostname: fabric-cli.example.com
     image: jmotacek/fabric-tools
     tty: true
     environment:
@@ -154,9 +154,9 @@ services:
       - peer0_org1
       - peer0_org2
     networks:
-      hyperledger-fabric:
+      - hyperledger-fabric:
         aliases:
-          - fabric-cli.example.com
+          - cli.example.com
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: bash -c 'while true; do sleep 20170504; done'
 
