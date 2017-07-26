@@ -145,6 +145,5 @@ services:
     command: bash -c 'while true; do sleep 20170504; done'
 
 networks:
-  default:
-    external:
-      name: hyperledger_fabric
+  hyperledger_fabric:
+    external: true
