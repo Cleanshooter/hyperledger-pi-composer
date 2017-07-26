@@ -88,8 +88,8 @@ services:
     environment:
       - CORE_PEER_ID=peer0_org2
       - CORE_PEER_ADDRESS=peer0_org2:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0_org2:7051
-      - CORE_PEER_CHAINCODELISTENADDRESS=peer0_org2:7052
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org2.example.com:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0_org2:7051
       - CORE_PEER_LOCALMSPID=Org2MSP
       - CORE_PEER_ADDRESSAUTODETECT=false
@@ -133,7 +133,7 @@ services:
       #- GOPATH=/opt/gopath
       - CORE_PEER_ID=fabric-cli
       - CORE_LOGGING_LEVEL=DEBUG
-      - CORE_PEER_ADDRESS=peer0_org1:7051 # default to operate on peer0.org1
+      - CORE_PEER_ADDRESS=peer0.org1.example.com:7051 # default to operate on peer0.org1
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_TLS_ENABLED=false  
       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
