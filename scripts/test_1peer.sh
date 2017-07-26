@@ -30,7 +30,7 @@ verifyResult () {
 }
 
 createChannel() {
-	peer channel create -o orderer:7050 -c ${CHANNEL_NAME} -f ./channel-artifacts/channel.tx >&log.txt
+	peer channel create -o orderer:7050 -c businesschannel -f ./channel-artifacts/channel.tx >&log.txt
 	res=$?
 	cat log.txt
 

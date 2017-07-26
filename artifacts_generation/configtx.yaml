@@ -19,7 +19,6 @@ Profiles:
                 Organizations:
                     - *Org1
                     - *Org2
-                    - *Org3
     TwoOrgsChannel:
         Consortium: SampleConsortium
         Application:
@@ -27,7 +26,6 @@ Profiles:
             Organizations:
                 - *Org1
                 - *Org2
-                - *Org3
 
 ################################################################################
 #
@@ -90,7 +88,7 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org1.example.com
+            - Host: peer0.org1.jmotacek.com
               Port: 7051
 
     - &Org2
@@ -119,36 +117,7 @@ Organizations:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org2.example.com
-              Port: 7051
-
-    - &Org3
-        # DefaultOrg defines the organization which is used in the sampleconfig
-        # of the fabric.git development environment
-        Name: Org3MSP
-
-        # ID to load the MSP definition as
-        ID: Org3MSP
-
-        MSPDir: crypto-config/peerOrganizations/org3.example.com/msp
-
-        # BCCSP (Blockchain crypto provider): Select which crypto implementation or
-        # library to use
-        BCCSP:
-            Default: SW
-            SW:
-                Hash: SHA2
-                Security: 256
-                # Location of Key Store. If this is unset, a location will
-                # be chosen using 'MSPDir'/keystore
-                FileKeyStore:
-                    KeyStore:
-
-        AnchorPeers:
-            # AnchorPeers defines the location of peers which can be used
-            # for cross org gossip communication.  Note, this value is only
-            # encoded in the genesis block in the Application section context
-            - Host: peer0.org3.example.com
+            - Host: peer0.org2.jmotacek.com
               Port: 7051
 
 ################################################################################
@@ -166,7 +135,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer.example.com:7050
+        - orderer.jmotacek.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s

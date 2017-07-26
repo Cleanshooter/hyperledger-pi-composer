@@ -25,13 +25,13 @@ services:
       - ORDERER_GENERAL_TLS_ENABLED=false
     expose:
       - "7050"  #
-    container_name: orderer
-    hostname: orderer
+    container_name: orderer.jmotacek.com
+    hostname: orderer.jmotacek.com
     ports:
       - "7050:7050"
     volumes:
-    - ./e2e_cli/channel-artifacts/orderer.genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-    - ./e2e_cli/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
+    - /home/jmotacek/hyperledger-pi-composer/e2e_cli/channel-artifacts/orderer.genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+    - /home/jmotacek/hyperledger-pi-composer/e2e_cli/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
     command: orderer start
 
   peer0_org1:
@@ -62,12 +62,11 @@ services:
       - "7059"  # tlsCAA
     volumes: # docker.sock is mapped as the default CORE_VM_ENDPOINT
       - /var/run/docker.sock:/var/run/docker.sock
+      - /home/jmotacek/hyperledger-pi-composer/e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
     #volumes:
     #    - /var/run/:/host/var/run/
     container_name: peer0_org1
-    hostname: peer0_org1
-    volumes:
-        - ./e2e_cli/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
+    hostname: peer0.org1.jmotacek.com
     ports:
       - 7051:7051
       - 7052:7052
@@ -101,12 +100,9 @@ services:
       - "7057"  # eCAA
     volumes: # docker.sock is mapped as the default CORE_VM_ENDPOINT
       - /var/run/docker.sock:/var/run/docker.sock
-    #volumes:
-    #    - /var/run/:/host/var/run/
+      - /home/jmotacek/hyperledger-pi-composer/e2e_cli/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
     container_name: peer0_org2
-    hostname: peer0_org2
-    volumes:
-        - ./e2e_cli/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
+    hostname: peer0.org2.jmotacek.com
     ports:
       - 9051:7051
       - 9052:7052
@@ -127,12 +123,12 @@ services:
       - CORE_PEER_TLS_ENABLED=false  
       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
     volumes:
-        - ./e2e_cli/examples:/opt/gopath/src/github.com/hyperledger/fabric/examples
-        - ./e2e_cli/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
-        - ./e2e_cli/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
-        - ./e2e_cli/configtx.yaml:/etc/hyperledger/fabric/configtx.yaml
-        - ./e2e_cli/crypto-config.yaml:/etc/hyperledger/fabric/crypto-config.yaml
+        - /home/jmotacek/hyperledger-pi-composer/e2e_cli/examples:/opt/gopath/src/github.com/hyperledger/fabric/examples
+        - /home/jmotacek/hyperledger-pi-composer/e2e_cli/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+        - /home/jmotacek/hyperledger-pi-composer/scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+        - /home/jmotacek/hyperledger-pi-composer/e2e_cli/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+        - /home/jmotacek/hyperledger-pi-composer/e2e_cli/configtx.yaml:/etc/hyperledger/fabric/configtx.yaml
+        - /home/jmotacek/hyperledger-pi-composer/e2e_cli/crypto-config.yaml:/etc/hyperledger/fabric/crypto-config.yaml
     depends_on:
       - orderer
       - peer0_org1
