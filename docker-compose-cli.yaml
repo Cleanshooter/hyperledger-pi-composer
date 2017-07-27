@@ -63,9 +63,9 @@ services:
         aliases:
           - peer0.org1.example.com
     volumes:
-        - /var/run/:/host/var/run/
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
+      - /var/run/:/host/var/run/
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/fabric/msp
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/fabric/tls
     ports:
       - 7051:7051
       - 7053:7053
@@ -99,9 +99,9 @@ services:
         aliases:
           - peer1.org1.example.com
     volumes:
-        - /var/run/:/host/var/run/
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/etc/hyperledger/fabric/msp
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/fabric/tls
+      - /var/run/:/host/var/run/
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp:/etc/hyperledger/fabric/msp
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls:/etc/hyperledger/fabric/tls
     ports:
       - 8051:7051
       - 8053:7053
@@ -135,9 +135,9 @@ services:
         aliases:
           - peer0.org2.example.com
     volumes:
-        - /var/run/:/host/var/run/
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/fabric/tls
+      - /var/run/:/host/var/run/
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/fabric/msp
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/fabric/tls
     ports:
       - 9051:7051
       - 9053:7053
@@ -171,9 +171,9 @@ services:
         aliases:
           - peer1.org2.example.com
     volumes:
-        - /var/run/:/host/var/run/
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/fabric/msp
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/fabric/tls
+      - /var/run/:/host/var/run/
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/fabric/msp
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/fabric/tls
     ports:
       - 10051:7051
       - 10053:7053
@@ -196,20 +196,19 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    command: /bin/bash -c './scripts/script.sh ${CHANNEL_NAME}; sleep $TIMEOUT'
+    command: /bin/bash -c 'sleep 60; ./scripts/script.sh ${CHANNEL_NAME}; sleep $TIMEOUT'
     volumes:
-        - /var/run/:/host/var/run/
-        - /home/jmotacek/hyperledger-pi-composer/chaincode/:/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode/go
-        - /home/jmotacek/hyperledger-pi-composer/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - /home/jmotacek/hyperledger-pi-composer/scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
-        - /home/jmotacek/hyperledger-pi-composer/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+      - /var/run/:/host/var/run/
+      - /home/jmotacek/hyperledger-pi-composer/chaincode:/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode/go
+      - /home/jmotacek/hyperledger-pi-composer/crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
+      - /home/jmotacek/hyperledger-pi-composer/scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+      - /home/jmotacek/hyperledger-pi-composer/channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
       - orderer
       - peer0_org1
       - peer1_org1
       - peer0_org2
       - peer1_org2
-    hostname: cli.example.com
     networks:
       hyperledger-fabric:
         aliases:
