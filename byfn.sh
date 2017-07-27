@@ -106,7 +106,7 @@ function networkUp () {
     replacePrivateKey
     generateChannelArtifacts
   fi
-  CHANNEL_NAME=$CHANNEL_NAME TIMEOUT=$CLI_TIMEOUT docker stack -c $COMPOSE_FILE hyperledger 2>&1
+  CHANNEL_NAME=$CHANNEL_NAME TIMEOUT=$CLI_TIMEOUT docker stack deploy -c $COMPOSE_FILE hyperledger 2>&1
   if [ $? -ne 0 ]; then
     echo "ERROR !!!! Unable to start network"
     docker logs -f cli
