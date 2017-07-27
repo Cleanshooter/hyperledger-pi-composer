@@ -5,9 +5,9 @@ The directions for using this are documented in the Hyperledger Fabric
 
 This repo is modded for building on a raspi docker swarm the current issue is that it can't get past channel creation... thinking it's becuase the cli and orderer are on seperate devices (Since it's a swarm)
 
-#RROR LOG FROM CLI CONTAINER
+# ERROR LOG FROM CLI CONTAINER
 
-
+```bash
  ____    _____      _      ____    _____ 
 / ___|  |_   _|    / \    |  _ \  |_   _|
 \___ \    | |     / _ \   | |_) |   | |  
@@ -183,4 +183,4 @@ Global Flags:
 
 !!!!!!!!!!!!!!! Channel creation failed !!!!!!!!!!!!!!!!
 ========= ERROR !!! FAILED to execute End-2-End Scenario ===========
-
+```
