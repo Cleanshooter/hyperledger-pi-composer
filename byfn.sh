@@ -106,7 +106,7 @@ function networkUp () {
     replacePrivateKey
     generateChannelArtifacts
   fi
-  CHANNEL_NAME=$CHANNEL_NAME TIMEOUT=$CLI_TIMEOUT docker-compose -f $COMPOSE_FILE up -d 2>&1
+  CHANNEL_NAME=$CHANNEL_NAME TIMEOUT=$CLI_TIMEOUT docker stack -c $COMPOSE_FILE hyperledger 2>&1
   if [ $? -ne 0 ]; then
     echo "ERROR !!!! Unable to start network"
     docker logs -f cli
@@ -117,11 +117,12 @@ function networkUp () {
 
 # Tear down running network
 function networkDown () {
-  docker-compose -f $COMPOSE_FILE down
+  docker stack rm hyperledger
   # Don't remove containers, images, etc if restarting
   if [ "$MODE" != "restart" ]; then
     #Cleanup the chaincode containers
-    clearContainers
+    #Uneccessary when using stacks 
+    #clearContainers
     #Cleanup images
     removeUnwantedImages
     # remove orderer block and other channel configuration transactions and certs
