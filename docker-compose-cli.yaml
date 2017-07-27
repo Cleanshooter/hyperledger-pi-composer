@@ -209,8 +209,11 @@ services:
       - peer1_org1
       - peer0_org2
       - peer1_org2
+    hostname: cli.example.com
     networks:
-      - byfn
+      hyperledger-fabric:
+        aliases:
+          - cli.example.com
 
 networks:
   hyperledger-fabric:
