@@ -141,6 +141,10 @@ services:
     ports:
       - 9051:7051
       - 9053:7053
+    deploy:
+      placement:
+        constraints:
+          - node.labels.master == yes
     command: peer node start
 
   peer1_org2:
