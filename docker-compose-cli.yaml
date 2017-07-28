@@ -184,7 +184,6 @@ services:
     image: jmotacek/fabric-tools
     tty: true
     environment:
-      - "constraint:node==pi3b-master"
       - GOPATH=/opt/gopath
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_LOGGING_LEVEL=DEBUG
@@ -210,6 +209,10 @@ services:
       - peer1_org1
       - peer0_org2
       - peer1_org2
+    deploy:
+      placement:
+        constraints:
+          - node.labels.master == yes
     networks:
       hyperledger-fabric:
         aliases:
