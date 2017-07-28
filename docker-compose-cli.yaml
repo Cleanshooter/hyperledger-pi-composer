@@ -33,6 +33,10 @@ services:
       - /home/jmotacek/hyperledger-pi-composer/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
     ports:
       - 7050:7050
+    deploy:
+      placement:
+        constraints:
+          - node.labels.type != pi2
     command: orderer
     
   peer0_org1:
