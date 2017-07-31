@@ -145,7 +145,6 @@ services:
       - CORE_PEER_ID=peer0.org2.example.com
       - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
       - CORE_PEER_LOCALMSPID=Org2MSP
       - CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912
       - CORE_CHAINCODE_BUILDER=jmotacek/fabric-ccenv:armv7l-1.0.0
