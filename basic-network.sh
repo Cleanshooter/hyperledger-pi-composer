@@ -67,6 +67,19 @@ do
     esac
 done
 
+# Remove old services
+echo "Removing old services"
+docker service rm orderer
+docker service rm cli
+sleep 2
+for (( i=1 ; i<=$total_orgs ; i++ )) 
+do
+  docker service rm peer0-org${i}
+  sleep 2
+  docker service rm peer1-org${i}
+  sleep 2
+done
+
 # echo "Launching zookeepers"
 # for (( i=0; i<$nZookeeper; i++ ))
 # do
