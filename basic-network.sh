@@ -115,7 +115,7 @@ done
 echo "Launching Orderer(s)"
 for (( i=0, j=7050 ; i<$nOrderer ; i++, j=j+20 ))
 do 
-  docker service create -d --name orderer.example.com \
+  docker service create -d --name orderer \
   --network hyperledger-fabric  \
   --restart-condition none \
   --constraint 'node.hostname == '$ORDERER_NODE \
@@ -148,7 +148,7 @@ do
     # --env CORE_PEER_ADDRESSAUTODETECT=false \
     # --env CORE_PEER_ENDORSER_ENABLED=true \
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
-  docker service create -d --name $ip1 \
+  docker service create -d --name peer0-org${i} \
     --network hyperledger-fabric \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname1 \
@@ -175,7 +175,7 @@ do
     # --env CORE_PEER_ADDRESSAUTODETECT=false \
     # --env CORE_PEER_ENDORSER_ENABLED=true \
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
-  docker service create -d --name $ip2 \
+  docker service create -d --name peer1-org${i} \
     --network hyperledger-fabric \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname2 \
@@ -203,7 +203,7 @@ sleep 15
 
 echo "Launching CLI"
   # --env CORE_PEER_ENDORSER_ENABLED=true \
-docker service create -d --name cli.example.com \
+docker service create -d --name cli \
   --tty=true \
   --network hyperledger-fabric \
   --restart-condition none \
@@ -222,4 +222,9 @@ docker service create -d --name cli.example.com \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/channel-artifacts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/scripts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/chaincode,dst=/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode \
+  --add-host orderer.example.com:orderer \
+  --add-host $PEER_IP1:peer0-org1 \
+  --add-host $PEER_IP2:peer1-org1 \
+  --add-host $PEER_IP3:peer0-org2 \
+  --add-host $PEER_IP4:peer1-org2 \
   jmotacek/fabric-tools  /bin/bash -c 'sleep 30; ./scripts/script.sh '$channel'; while true; do sleep 20170504; done;'
