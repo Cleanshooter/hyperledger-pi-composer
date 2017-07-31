@@ -123,6 +123,7 @@ do
   --host $PEER_IP4:10.0.0.11 \
   --restart-condition none \
   --constraint 'node.hostname == '$ORDERER_NODE \
+  --env CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912 \
   --env ORDERER_GENERAL_LOGLEVEL=debug \
   --env ORDERER_GENERAL_LISTENADDRESS=0.0.0.0 \
   --env ORDERER_GENERAL_GENESISMETHOD=file \
@@ -162,6 +163,7 @@ do
     --restart-condition none \
     --constraint 'node.hostname == '$hostname1 \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
+    --env CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912 \
     --env CORE_LOGGING_LEVEL=DEBUG \
     --env CORE_PEER_TLS_ENABLED=false \
     --env CORE_PEER_GOSSIP_ORGLEADER=false \
@@ -194,12 +196,13 @@ do
     --restart-condition none \
     --constraint 'node.hostname == '$hostname2 \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
+    --env CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912 \
     --env CORE_LOGGING_LEVEL=DEBUG \
     --env CORE_PEER_TLS_ENABLED=false \
     --env CORE_PEER_GOSSIP_ORGLEADER=false \
     --env CORE_PEER_GOSSIP_USELEADERELECTION=true \
     --env CORE_PEER_PROFILE_ENABLED=true \
-    --env CORE_PEER_ADDRESS=$ip2:$port1 \
+    --env CORE_PEER_ADDRESS=$ip2:`expr $port1 + 1000` \
     --env CORE_PEER_ID=peer1-org${i} \
     --env CORE_PEER_LOCALMSPID=Org${i}MSP \
     --env CORE_PEER_GOSSIP_BOOTSTRAP=$ip1:$port1 \
@@ -225,6 +228,7 @@ docker service create -d --name cli \
   --env GOPATH=/opt/gopath \
   --env CORE_PEER_ADDRESSAUTODETECT=false \
   --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
+  --env CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912 \
   --env CORE_LOGGING_LEVEL=DEBUG \
   --env CORE_PEER_ID=cli \
   --env CORE_PEER_ADDRESS=$PEER_IP1:7051 \

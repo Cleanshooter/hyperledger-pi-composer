@@ -29,7 +29,7 @@ verifyResult () {
 }
 
 setGlobals () {
-
+  CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912
 	if [ $1 -eq 0 -o $1 -eq 1 ] ; then
 		CORE_PEER_LOCALMSPID="Org1MSP"
 		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
