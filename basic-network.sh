@@ -72,7 +72,7 @@ echo "Removing old services"
 docker service rm orderer
 docker service rm cli
 sleep 2
-for (( i=1 ; i<$total_orgs+1 ; i++ )) 
+for (( i=1 ; i<=$nOrgs ; i++ )) 
 do
   docker service rm peer0-org${i}
   sleep 2
@@ -136,7 +136,7 @@ sleep 5
 
 echo "Launching Peers"
 total_orgs=$nOrgs
-for (( i=1, port1=7051, port2=7053 ; i<$total_orgs+1 ; i++, port1=port1+2000, port2=port2+2000 )) 
+for (( i=1, port1=7051, port2=7053 ; i<=$total_orgs ; i++, port1=port1+2000, port2=port2+2000 )) 
 do
 
   case $i in 
