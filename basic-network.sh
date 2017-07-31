@@ -219,10 +219,10 @@ docker service create -d --name cli \
   --env CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp \
   --workdir /opt/gopath/src/github.com/hyperledger/fabric/peer \
   --mount type=bind,src=/var/run,dst=/host/var/run \
-  --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/crypto-config,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/go \
+  --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/crypto-config,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/channel-artifacts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/scripts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts \
-  --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/chaincode,dst=/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode \
+  --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/chaincode,dst=/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode/go \
   --host orderer.example.com:10.0.0.3 \
   --host $PEER_IP1:10.0.0.5 \
   --host $PEER_IP2:10.0.0.7 \
