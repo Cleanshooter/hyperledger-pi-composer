@@ -109,7 +109,7 @@ do
   --env ORDERER_GENERAL_LOGLEVEL=debug \
   --env ORDERER_GENERAL_LISTENADDRESS=0.0.0.0 \
   --env ORDERER_GENERAL_GENESISMETHOD=file \
-  --env ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genisis.block \
+  --env ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block \
   --env ORDERER_GENERAL_LOCALMSPID=OrdererMSP \
   --env ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp  \
   --workdir /opt/gopath/src/github.com/hyperledger/fabric  \
@@ -130,22 +130,22 @@ do
              2) hostname1=$PEER_NODE3 ; ip1=$PEER_IP3 ; hostname2=$PEER_NODE4 ; ip2=$PEER_IP4 ;;
         esac
   echo "Launching peer0-org${i}"
+    # --env CORE_PEER_ADDRESSAUTODETECT=false \
+    # --env CORE_PEER_ENDORSER_ENABLED=true \
+    # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
   docker service create --name peer0-org${i} \
     --network hyperledger-fabric \
     --hostname $ip1 \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname1 \
-    # --env CORE_PEER_ADDRESSAUTODETECT=false \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
     --env CORE_LOGGING_LEVEL=DEBUG \
     --env CORE_PEER_TLS_ENABLED=false \
-    # --env CORE_PEER_ENDORSER_ENABLED=true \
     --env CORE_PEER_GOSSIP_ORGLEADER=false \
     --env CORE_PEER_GOSSIP_USELEADERELECTION=true \
     --env CORE_PEER_PROFILE_ENABLED=true \
     --env CORE_PEER_ADDRESS=$ip1:$port1 \
     --env CORE_PEER_ID=peer0-org${i} \
-    # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
     --env CORE_PEER_LOCALMSPID=Org${i}MSP \
     --env CORE_PEER_GOSSIP_EXTERNALENDPOINT=$ip1:$port1 \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric/peer \
@@ -158,22 +158,22 @@ do
   sleep 5
 
   echo "Launching peer1-org${i}"
+    # --env CORE_PEER_ADDRESSAUTODETECT=false \
+    # --env CORE_PEER_ENDORSER_ENABLED=true \
+    # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
   docker service create --name peer1-org${i} \
     --network hyperledger-fabric \
     --hostname $ip2 \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname2 \
-    # --env CORE_PEER_ADDRESSAUTODETECT=false \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
     --env CORE_LOGGING_LEVEL=DEBUG \
     --env CORE_PEER_TLS_ENABLED=false \
-    # --env CORE_PEER_ENDORSER_ENABLED=true \
     --env CORE_PEER_GOSSIP_ORGLEADER=false \
     --env CORE_PEER_GOSSIP_USELEADERELECTION=true \
     --env CORE_PEER_PROFILE_ENABLED=true \
     --env CORE_PEER_ADDRESS=$ip2:$port1 \
     --env CORE_PEER_ID=peer1-org${i} \
-    # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
     --env CORE_PEER_LOCALMSPID=Org${i}MSP \
     --env CORE_PEER_GOSSIP_BOOTSTRAP=$ip1:$port1 \
     --workdir /opt/gopath/src/github.com/hyperledger/fabric/peer \
@@ -189,6 +189,7 @@ done
 sleep 15
 
 echo "Launching CLI"
+  # --env CORE_PEER_ENDORSER_ENABLED=true \
 docker service create --name cli \
   --tty=true \
   --network hyperledger-fabric \
@@ -199,7 +200,6 @@ docker service create --name cli \
   --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
   --env CORE_LOGGING_LEVEL=DEBUG \
   --env CORE_PEER_ID=cli \
-  # --env CORE_PEER_ENDORSER_ENABLED=true \
   --env CORE_PEER_ADDRESS=$PEER_IP1:7051 \
   --env CORE_PEER_GOSSIP_IGNORESECURITY=true \
   --env CORE_PEER_LOCALMSPID=Org1MSP \
