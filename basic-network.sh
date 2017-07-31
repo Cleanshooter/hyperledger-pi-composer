@@ -70,14 +70,15 @@ done
 # Remove old services
 echo "Removing old services"
 docker service rm orderer
+sleep 1
 docker service rm cli
-sleep 2
+sleep 1
 for (( i=1 ; i<=$nOrgs ; i++ )) 
 do
   docker service rm peer0-org${i}
-  sleep 2
+  sleep 1
   docker service rm peer1-org${i}
-  sleep 2
+  sleep 1
 done
 
 # echo "Launching zookeepers"
@@ -114,7 +115,7 @@ done
 echo "Launching Orderer(s)"
 for (( i=0, j=7050 ; i<$nOrderer ; i++, j=j+20 ))
 do 
-  docker service create -d true --name orderer.example.com \
+  docker service create -d --name orderer.example.com \
   --network hyperledger-fabric  \
   --restart-condition none \
   --constraint 'node.hostname == '$ORDERER_NODE \
@@ -147,7 +148,7 @@ do
     # --env CORE_PEER_ADDRESSAUTODETECT=false \
     # --env CORE_PEER_ENDORSER_ENABLED=true \
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
-  docker service create -d true --name $ip1 \
+  docker service create -d --name $ip1 \
     --network hyperledger-fabric \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname1 \
@@ -174,7 +175,7 @@ do
     # --env CORE_PEER_ADDRESSAUTODETECT=false \
     # --env CORE_PEER_ENDORSER_ENABLED=true \
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
-  docker service create -d true --name $ip2 \
+  docker service create -d --name $ip2 \
     --network hyperledger-fabric \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname2 \
@@ -202,7 +203,7 @@ sleep 15
 
 echo "Launching CLI"
   # --env CORE_PEER_ENDORSER_ENABLED=true \
-docker service create -d true --name cli.example.com \
+docker service create -d --name cli.example.com \
   --tty=true \
   --network hyperledger-fabric \
   --restart-condition none \
