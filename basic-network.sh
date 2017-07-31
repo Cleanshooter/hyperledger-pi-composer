@@ -223,5 +223,5 @@ docker service create --name cli \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/crypto-config,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/channel-artifacts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/scripts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts \
-  --mount type=bind,src=home/jmotacek/hyperledger-pi-composer/chaincode,dst=/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode \
+  --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/chaincode,dst=/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode \
   jmotacek/fabric-tools  /bin/bash -c 'sleep 30; ./scripts/script.sh '$channel'; while true; do sleep 20170504; done;'
