@@ -132,7 +132,7 @@ do
   jmotacek/fabric-orderer orderer
 done
 
-sleep 5
+sleep 3
 
 echo "Launching Peers"
 total_orgs=$nOrgs
@@ -199,7 +199,7 @@ do
   sleep 3    
 done
 
-sleep 15
+sleep 10
 
 echo "Launching CLI"
   # --env CORE_PEER_ENDORSER_ENABLED=true \
@@ -222,9 +222,9 @@ docker service create -d --name cli \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/channel-artifacts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/scripts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/chaincode,dst=/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode \
-  --add-host orderer.example.com:orderer \
-  --add-host $PEER_IP1:peer0-org1 \
-  --add-host $PEER_IP2:peer1-org1 \
-  --add-host $PEER_IP3:peer0-org2 \
-  --add-host $PEER_IP4:peer1-org2 \
+  --host-add orderer.example.com:orderer \
+  --host-add $PEER_IP1:peer0-org1 \
+  --host-add $PEER_IP2:peer1-org1 \
+  --host-add $PEER_IP3:peer0-org2 \
+  --host-add $PEER_IP4:peer1-org2 \
   jmotacek/fabric-tools  /bin/bash -c 'sleep 30; ./scripts/script.sh '$channel'; while true; do sleep 20170504; done;'
