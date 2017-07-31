@@ -216,6 +216,7 @@ docker service create -d --name cli \
   --env CORE_PEER_ADDRESS=$PEER_IP1:7051 \
   --env CORE_PEER_GOSSIP_IGNORESECURITY=true \
   --env CORE_PEER_LOCALMSPID=Org1MSP \
+  --env CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp \
   --workdir /opt/gopath/src/github.com/hyperledger/fabric/peer \
   --mount type=bind,src=/var/run,dst=/host/var/run \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/crypto-config,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto \
