@@ -222,9 +222,9 @@ docker service create -d --name cli \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/channel-artifacts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/scripts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/chaincode,dst=/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode \
-  --host-add orderer.example.com:orderer \
-  --host-add $PEER_IP1:peer0-org1 \
-  --host-add $PEER_IP2:peer1-org1 \
-  --host-add $PEER_IP3:peer0-org2 \
-  --host-add $PEER_IP4:peer1-org2 \
+  --host orderer.example.com:orderer \
+  --host $PEER_IP1:peer0-org1 \
+  --host $PEER_IP2:peer1-org1 \
+  --host $PEER_IP3:peer0-org2 \
+  --host $PEER_IP4:peer1-org2 \
   jmotacek/fabric-tools  /bin/bash -c 'sleep 30; ./scripts/script.sh '$channel'; while true; do sleep 20170504; done;'
