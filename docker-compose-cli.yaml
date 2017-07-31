@@ -5,6 +5,9 @@
 
 version: '3'
 
+networks:
+  hyperledger-fabric:
+
 services:
   orderer:
     container_name: orderer.example.com
@@ -257,7 +260,3 @@ services:
       hyperledger-fabric:
         aliases:
           - cli.example.com
-
-networks:
-  hyperledger-fabric:
-    external: true
