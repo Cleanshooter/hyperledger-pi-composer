@@ -6,7 +6,7 @@
 version: '3'
 
 networks:
-  hyperledger-fabric:
+  fabric:
 
 services:
   orderer:
@@ -31,7 +31,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     hostname: orderer.example.com
     networks:
-      hyperledger-fabric:
+      fabric:
         aliases:
           - orderer.example.com
     volumes:
@@ -51,7 +51,7 @@ services:
     image: jmotacek/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hmoto_byfn
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger_fabric
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
@@ -72,7 +72,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     hostname: peer0.org1.example.com
     networks:
-      hyperledger-fabric:
+      fabric:
         aliases:
           - peer0.org1.example.com
     volumes:
@@ -93,7 +93,7 @@ services:
     image: jmotacek/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=moto_byfn
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger_fabric
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
@@ -115,7 +115,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     hostname: peer1.org1.example.com
     networks:
-      hyperledger-fabric:
+      fabric:
         aliases:
           - peer1.org1.example.com
     volumes:
@@ -136,7 +136,7 @@ services:
     image: jmotacek/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=moto_byfn
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger_fabric
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
@@ -158,7 +158,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     hostname: peer0.org2.example.com
     networks:
-      hyperledger-fabric:
+      fabric:
         aliases:
           - peer0.org2.example.com
     volumes:
@@ -179,7 +179,7 @@ services:
     image: jmotacek/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=moto_byfn
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger_fabric
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_GOSSIP_USELEADERELECTION=true
@@ -201,7 +201,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     hostname: peer1.org2.example.com
     networks:
-      hyperledger-fabric:
+      fabric:
         aliases:
           - peer1.org2.example.com
     volumes:
@@ -257,6 +257,6 @@ services:
         constraints:
           - node.hostname == pi3b-master
     networks:
-      hyperledger-fabric:
+      fabric:
         aliases:
           - cli.example.com
