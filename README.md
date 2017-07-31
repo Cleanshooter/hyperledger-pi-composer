@@ -7,6 +7,7 @@ This repo is modded for building on a raspi docker swarm the current issue:
 Can't instantiate chain code... error output below.
 
 ## Notes: 
+### Docker memory issues... turned out to be an app config issue
 sudo systemctl unmask docker.service
 sudo systemctl unmask docker.socket
 sudo systemctl start docker.service
@@ -15,7 +16,10 @@ sudo nano /boot/cmdline.txt
 
 add 'cgroup_enable=memory swapaccount=1' before 'elevator=deadline'
 
-reboot
+reboot (afterwards)
+
+### Network setup
+docker network create --attachable --driver overlay hyperledger-fabric
 
 ### ERROR LOG FROM CLI CONTAINER
 
