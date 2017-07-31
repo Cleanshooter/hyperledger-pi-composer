@@ -114,9 +114,8 @@ done
 echo "Launching Orderer(s)"
 for (( i=0, j=7050 ; i<$nOrderer ; i++, j=j+20 ))
 do 
-  docker service create --name orderer \
+  docker service create -d true --name orderer.example.com \
   --network hyperledger-fabric  \
-  --hostname orderer.example.com \
   --restart-condition none \
   --constraint 'node.hostname == '$ORDERER_NODE \
   --env ORDERER_GENERAL_LOGLEVEL=debug \
@@ -148,9 +147,8 @@ do
     # --env CORE_PEER_ADDRESSAUTODETECT=false \
     # --env CORE_PEER_ENDORSER_ENABLED=true \
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
-  docker service create --name peer0-org${i} \
+  docker service create -d true --name $ip1 \
     --network hyperledger-fabric \
-    --hostname $ip1 \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname1 \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
@@ -176,9 +174,8 @@ do
     # --env CORE_PEER_ADDRESSAUTODETECT=false \
     # --env CORE_PEER_ENDORSER_ENABLED=true \
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
-  docker service create --name peer1-org${i} \
+  docker service create -d true --name $ip2 \
     --network hyperledger-fabric \
-    --hostname $ip2 \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname2 \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
@@ -205,7 +202,7 @@ sleep 15
 
 echo "Launching CLI"
   # --env CORE_PEER_ENDORSER_ENABLED=true \
-docker service create --name cli \
+docker service create -d true --name cli.example.com \
   --tty=true \
   --network hyperledger-fabric \
   --restart-condition none \
