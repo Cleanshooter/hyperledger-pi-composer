@@ -117,8 +117,6 @@ for (( i=0, j=7050 ; i<$nOrderer ; i++, j=j+20 ))
 do 
   docker service create -d --name orderer \
   --network hyperledger-fabric  \
-  --hostname orderer.example.com \
-  --endpoint-mode dnsrr \
   --restart-condition none \
   --constraint 'node.hostname == '$ORDERER_NODE \
   --env ORDERER_GENERAL_LOGLEVEL=debug \
@@ -152,8 +150,6 @@ do
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
   docker service create -d --name peer0-org${i} \
     --network hyperledger-fabric \
-    --hostname $ip1 \
-    --endpoint-mode dnsrr \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname1 \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
@@ -181,8 +177,6 @@ do
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
   docker service create -d --name peer1-org${i} \
     --network hyperledger-fabric \
-    --hostname $ip2 \
-    --endpoint-mode dnsrr \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname2 \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
@@ -212,8 +206,6 @@ echo "Launching CLI"
 docker service create -d --name cli \
   --tty=true \
   --network hyperledger-fabric \
-  --hostname cli.example.com \
-  --endpoint-mode dnsrr \
   --restart-condition none \
   --constraint 'node.hostname == pi3b-master' \
   --env GOPATH=/opt/gopath \
@@ -230,4 +222,9 @@ docker service create -d --name cli \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/channel-artifacts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/scripts,dst=/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts \
   --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/chaincode,dst=/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode \
+  --host orderer.example.com:10.0.0.3 \
+  --host $PEER_IP1:10.0.0.5 \
+  --host $PEER_IP2:10.0.0.7 \
+  --host $PEER_IP3:10.0.0.9 \
+  --host $PEER_IP4:10.0.0.11 \
   jmotacek/fabric-tools  /bin/bash -c 'sleep 30; ./scripts/script.sh '$channel'; while true; do sleep 20170504; done;'
