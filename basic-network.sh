@@ -180,7 +180,7 @@ do
     --mount type=bind,src=/var/run/,dst=/host/var/run/ \
     --mount type=bind,src=/home/jmotacek/hyperledger-pi-composer/crypto-config/peerOrganizations/org${i}.example.com/peers/peer1.org${i}.example.com/msp,dst=/etc/hyperledger/fabric/msp \
     --publish `expr $port1 + 1000`:7051 \
-    --publish `expr $port1 + 1000`:7053 \
+    --publish `expr $port2 + 1000`:7053 \
     jmotacek/fabric-peer peer node start --peer-defaultchain=false
     
   sleep 5    
