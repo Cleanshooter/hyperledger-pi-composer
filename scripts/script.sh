@@ -16,6 +16,15 @@ COUNTER=1
 MAX_RETRY=5
 ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
+#Custom config vars
+#Prevents "Minimum memory limit allowed is 4MB" error on low RAM devices (like RasPi)
+CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912
+# Sets the default images to use my build for the ARM architecture
+CORE_CHAINCODE_BUILDER=jmotacek/fabric-ccenv
+CORE_CHAINCODE_GOLANG=jmotacek/fabric-baseos
+CORE_CHAINCODE_CAR=jmotacek/fabric-baseos
+CORE_CHAINCODE_JAVA=jmotacek/fabric-javaenv
+
 echo "Channel name : "$CHANNEL_NAME
 
 # verify the result of the end-to-end test
@@ -29,7 +38,6 @@ verifyResult () {
 }
 
 setGlobals () {
-  CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912
 	if [ $1 -eq 0 -o $1 -eq 1 ] ; then
 		CORE_PEER_LOCALMSPID="Org1MSP"
 		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt

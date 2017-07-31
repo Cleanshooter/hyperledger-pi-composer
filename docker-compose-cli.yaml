@@ -16,7 +16,6 @@ services:
       - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
       - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
-      # enabled TLS
       - ORDERER_GENERAL_TLS_ENABLED=true
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
@@ -36,7 +35,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.labels.type != pi2
+          - node.hostname == pi3b-master
     command: orderer
     
   peer0_org1:
@@ -44,9 +43,6 @@ services:
     image: jmotacek/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      # the following setting starts chaincode containers on the same
-      # bridge network as the peers
-      # https://docs.docker.com/compose/networking/
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger-fabric
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_TLS_ENABLED=true
@@ -73,6 +69,10 @@ services:
     ports:
       - 7051:7051
       - 7053:7053
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == pi3b-node1
     command: peer node start
 
   peer1_org1:
@@ -80,9 +80,6 @@ services:
     image: jmotacek/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      # the following setting starts chaincode containers on the same
-      # bridge network as the peers
-      # https://docs.docker.com/compose/networking/
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger-fabric
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_TLS_ENABLED=true
@@ -109,6 +106,10 @@ services:
     ports:
       - 8051:7051
       - 8053:7053
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == pi3b-node1
     command: peer node start
 
   peer0_org2:
@@ -116,9 +117,6 @@ services:
     image: jmotacek/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      # the following setting starts chaincode containers on the same
-      # bridge network as the peers
-      # https://docs.docker.com/compose/networking/
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger-fabric
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_TLS_ENABLED=true
@@ -148,7 +146,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.labels.master == yes
+          - node.hostname == pi3b-node2
     command: peer node start
 
   peer1_org2:
@@ -156,9 +154,6 @@ services:
     image: jmotacek/fabric-peer
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      # the following setting starts chaincode containers on the same
-      # bridge network as the peers
-      # https://docs.docker.com/compose/networking/
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=hyperledger-fabric
       - CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_TLS_ENABLED=true
@@ -185,6 +180,10 @@ services:
     ports:
       - 10051:7051
       - 10053:7053
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == pi2b-node3
     command: peer node start
 
   cli:
@@ -220,7 +219,7 @@ services:
     deploy:
       placement:
         constraints:
-          - node.labels.master == yes
+          - node.hostname == pi3b-master
     networks:
       hyperledger-fabric:
         aliases:
