@@ -72,7 +72,7 @@ echo "Removing old services"
 docker service rm orderer
 docker service rm cli
 sleep 2
-for (( i=1 ; i<=$total_orgs ; i++ )) 
+for (( i=1 ; i<$total_orgs+1 ; i++ )) 
 do
   docker service rm peer0-org${i}
   sleep 2
@@ -132,16 +132,18 @@ do
   jmotacek/fabric-orderer orderer
 done
 
-sleep 10
+sleep 5
 
 echo "Launching Peers"
 total_orgs=$nOrgs
-for (( i=1, port1=7051, port2=7053 ; i<=$total_orgs ; i++, port1=port1+2000, port2=port2+2000 )) 
+for (( i=1, port1=7051, port2=7053 ; i<$total_orgs+1 ; i++, port1=port1+2000, port2=port2+2000 )) 
 do
-        case $i in 
-             1) hostname1=$PEER_NODE1 ; ip1=$PEER_IP1 ; hostname2=$PEER_NODE2 ; ip2=$PEER_IP2 ;;
-             2) hostname1=$PEER_NODE3 ; ip1=$PEER_IP3 ; hostname2=$PEER_NODE4 ; ip2=$PEER_IP4 ;;
-        esac
+
+  case $i in 
+       1) hostname1=$PEER_NODE1 ; ip1=$PEER_IP1 ; hostname2=$PEER_NODE2 ; ip2=$PEER_IP2 ;;
+       2) hostname1=$PEER_NODE3 ; ip1=$PEER_IP3 ; hostname2=$PEER_NODE4 ; ip2=$PEER_IP4 ;;
+  esac
+
   echo "Launching peer0-org${i}"
     # --env CORE_PEER_ADDRESSAUTODETECT=false \
     # --env CORE_PEER_ENDORSER_ENABLED=true \
@@ -168,7 +170,7 @@ do
     --publish $port2:7053 \
     jmotacek/fabric-peer peer node start --peer-defaultchain=false
   
-  sleep 5
+  sleep 3
 
   echo "Launching peer1-org${i}"
     # --env CORE_PEER_ADDRESSAUTODETECT=false \
@@ -196,7 +198,7 @@ do
     --publish `expr $port2 + 1000`:7053 \
     jmotacek/fabric-peer peer node start --peer-defaultchain=false
     
-  sleep 5    
+  sleep 3    
 done
 
 sleep 15
