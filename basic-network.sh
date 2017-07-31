@@ -117,6 +117,10 @@ for (( i=0, j=7050 ; i<$nOrderer ; i++, j=j+20 ))
 do 
   docker service create -d --name orderer \
   --network hyperledger-fabric  \
+  --host $PEER_IP1:10.0.0.5 \
+  --host $PEER_IP2:10.0.0.7 \
+  --host $PEER_IP3:10.0.0.9 \
+  --host $PEER_IP4:10.0.0.11 \
   --restart-condition none \
   --constraint 'node.hostname == '$ORDERER_NODE \
   --env ORDERER_GENERAL_LOGLEVEL=debug \
@@ -150,6 +154,11 @@ do
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
   docker service create -d --name peer0-org${i} \
     --network hyperledger-fabric \
+    --host orderer.example.com:10.0.0.3 \
+    --host $PEER_IP1:10.0.0.5 \
+    --host $PEER_IP2:10.0.0.7 \
+    --host $PEER_IP3:10.0.0.9 \
+    --host $PEER_IP4:10.0.0.11 \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname1 \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
@@ -177,6 +186,11 @@ do
     # --env CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/msp/sampleconfig \
   docker service create -d --name peer1-org${i} \
     --network hyperledger-fabric \
+    --host orderer.example.com:10.0.0.3 \
+    --host $PEER_IP1:10.0.0.5 \
+    --host $PEER_IP2:10.0.0.7 \
+    --host $PEER_IP3:10.0.0.9 \
+    --host $PEER_IP4:10.0.0.11 \
     --restart-condition none \
     --constraint 'node.hostname == '$hostname2 \
     --env CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock \
