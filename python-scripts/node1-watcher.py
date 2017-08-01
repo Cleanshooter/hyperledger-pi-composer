@@ -1,23 +1,16 @@
 import time
 import RPi.GPIO as GPIO
-from watchdog.observers import Observer
-from watchdog.events import PatternMatchingEventHandler
 
+def follow(thefile):
+    thefile.seek(0,2)
+    while True:
+        line = thefile.readline()
+        if not line:
+            time.sleep(0.1)
+            continue
+        yield line
 
-class MyHandler(PatternMatchingEventHandler):
-    patterns = ["*/peer0org1log.txt", "*/peer1org1log.txt"]
-    def on_modified(self, event):
-        if event.src_path.endswith("peer0org1log.txt"):
-            GPIO.output(18,GPIO.HIGH)
-            time.sleep(0.05)
-            GPIO.output(18,GPIO.LOW)
-        if event.src_path.endswith("peer1org1log.txt"):
-            GPIO.output(5,GPIO.HIGH)
-            time.sleep(0.05)
-            GPIO.output(5,GPIO.LOW)
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     GPIO.setmode(GPIO.BCM)
     GPIO.setwarnings(False)
     GPIO.setup(18,GPIO.OUT) # Peer 0 Green
@@ -25,11 +18,21 @@ if __name__ == "__main__":
     GPIO.setup(27,GPIO.OUT) # Peer 0 Red
     GPIO.setup(5,GPIO.OUT) # Peer 1 Green
     GPIO.setup(6,GPIO.OUT) # Peer 1 Amber
-    event_handler = MyHandler()
-    observer = Observer()
-    observer.schedule(event_handler, path='/home/jmotacek/hyperledger-pi-composer/logs/', recursive=False)
-    observer.start()
 
+    logfile = open("/home/jmotacek/hyperledger-pi-composer/logs/peer0org1log.txt","r")
+    loglines = follow(logfile)
+    for line in loglines:
+        GPIO.output(18,GPIO.HIGH)
+        time.sleep(0.01)
+        GPIO.output(18,GPIO.LOW)
+        # Flip Amber light on when chain code is installed
+        if 'chaincode canonical name: mycc:1.0' in line:
+            GPIO.output(17,GPIO.HIGH)
+        # Flip red on when identified as an anchor peer
+        if 'Anchor peers for org Org1MSP are anchor_peers:<host:"peer0.org1.example.com"' in line:
+            GPIO.output(27,GPIO.HIGH)
+
+    # Catch keyboard exists and kill the lights
     try:
         while True:
             time.sleep(1)
@@ -37,5 +40,5 @@ if __name__ == "__main__":
         GPIO.output(18,GPIO.LOW)
         GPIO.output(17,GPIO.LOW)
         GPIO.output(27,GPIO.LOW)
-        observer.stop()
-    observer.join()
+        GPIO.output(5,GPIO.LOW)
+        GPIO.output(6,GPIO.LOW)
