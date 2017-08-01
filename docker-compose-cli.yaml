@@ -82,7 +82,7 @@ services:
       placement:
         constraints:
           - node.hostname == pi3b-node1
-    command: peer node start &> /home/logs/peer0org1log.txt
+    command: peer node start >> /home/logs/peer0org1log.txt 2>&1
 
   peer1_org1:
     container_name: peer1.org1.example.com
