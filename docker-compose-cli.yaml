@@ -1,4 +1,4 @@
-# Copyright IBM Corp. All Rights Reserved.
+# Copyright Joe Motacek All Rights Reserved.
 #
 # SPDX-License-Identifier: Apache-2.0
 #
@@ -124,7 +124,7 @@ services:
       placement:
         constraints:
           - node.hostname == pi3b-node1
-    command: peer node start
+    command: bash -c "peer node start > /home/logs/peer1org1log.txt 2>&1"
 
   peer0_org2:
     image: jmotacek/fabric-peer
@@ -166,7 +166,7 @@ services:
       placement:
         constraints:
           - node.hostname == pi3b-node2
-    command: peer node start
+    command: bash -c "peer node start > /home/logs/peer0org2log.txt 2>&1"
 
   peer1_org2:
     image: jmotacek/fabric-peer
@@ -208,7 +208,7 @@ services:
       placement:
         constraints:
           - node.hostname == pi2b-node3
-    command: peer node start
+    command: bash -c "peer node start > /home/logs/peer1org2log.txt 2>&1"
 
   cli:
     image: jmotacek/fabric-tools
