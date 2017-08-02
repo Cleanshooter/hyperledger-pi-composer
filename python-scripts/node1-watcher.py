@@ -17,10 +17,10 @@ GPIO.setup(27,GPIO.OUT) # Peer 0 Red
 GPIO.setup(5,GPIO.OUT) # Peer 1 Green
 GPIO.setup(6,GPIO.OUT) # Peer 1 Amber
 
-
-async def blink():
+@asyncio.coroutine
+def blink():
     GPIO.output(18,GPIO.HIGH)
-    await asyncio.sleep(0.01)
+    yield from asyncio.sleep(0.01)
     GPIO.output(18,GPIO.LOW)
 
 loop = asyncio.get_event_loop()
