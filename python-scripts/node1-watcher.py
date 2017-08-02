@@ -25,7 +25,7 @@ def blink():
     yield from asyncio.sleep(0.01)
     GPIO.output(18,GPIO.LOW)
 
-print "Starting aync loop..."
+print("Starting aync loop...")
 loop = asyncio.get_event_loop()
 loop.run_forever()
 while True:
