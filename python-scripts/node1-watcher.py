@@ -37,25 +37,25 @@ print("Starting aync loop...")
 # Catch keyboard exists and kill the lights
 try:
     while True:
-    if p.poll(1):
-        line = f.stdout.readline()
-        line = line.decode()
-        print("Peer0Org1: "+line)
-        blink1()
-        # Flip Amber light on when chain code is installed
-        if 'chaincode canonical name: mycc:1.0' in line:
-            GPIO.output(17,GPIO.HIGH)
-        # Flip red on when identified as an anchor peer
-        if 'Anchor peers for org Org1MSP are anchor_peers:<host:"peer0.org1.example.com"' in line:
-            GPIO.output(27,GPIO.HIGH)
-    if p2.poll(1):
-        line = f.stdout.readline()
-        line = line.decode()
-        print("Peer1Org1: "+line)
-        blink2()
-        # Flip Amber light on when chain code is installed
-        if 'chaincode canonical name: mycc:1.0' in line:
-            GPIO.output(6,GPIO.HIGH)
+        if p.poll(1):
+            line = f.stdout.readline()
+            line = line.decode()
+            print("Peer0Org1: "+line)
+            blink1()
+            # Flip Amber light on when chain code is installed
+            if 'chaincode canonical name: mycc:1.0' in line:
+                GPIO.output(17,GPIO.HIGH)
+            # Flip red on when identified as an anchor peer
+            if 'Anchor peers for org Org1MSP are anchor_peers:<host:"peer0.org1.example.com"' in line:
+                GPIO.output(27,GPIO.HIGH)
+        if p2.poll(1):
+            line = f.stdout.readline()
+            line = line.decode()
+            print("Peer1Org1: "+line)
+            blink2()
+            # Flip Amber light on when chain code is installed
+            if 'chaincode canonical name: mycc:1.0' in line:
+                GPIO.output(6,GPIO.HIGH)
 
 except KeyboardInterrupt:
     pass
