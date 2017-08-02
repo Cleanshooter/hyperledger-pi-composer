@@ -4,11 +4,13 @@ import subprocess
 import select
 import asyncio
 
+print "Preparing to tail log with subprocess.."
 f = subprocess.Popen(['tail','-F',"/home/jmotacek/hyperledger-pi-composer/logs/peer0org1log.txt"],\
     stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 p = select.poll()
 p.register(f.stdout)
 
+print "Setting up GPIO..."
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(18,GPIO.OUT) # Peer 0 Green
@@ -23,12 +25,13 @@ def blink():
     yield from asyncio.sleep(0.01)
     GPIO.output(18,GPIO.LOW)
 
+print "Starting aync loop..."
 loop = asyncio.get_event_loop()
 loop.run_forever()
 while True:
     if p.poll(1):
         line = f.stdout.readline()
-        print(line)
+        print line
         asyncio.ensure_future(blink())
         # Flip Amber light on when chain code is installed
         if 'chaincode canonical name: mycc:1.0' in line:
@@ -44,6 +47,7 @@ try:
     while True:
         time.sleep(1)
 except KeyboardInterrupt:
+    print "Stopping"
     loop.stop()
     loop.close()
     GPIO.output(18,GPIO.LOW)
