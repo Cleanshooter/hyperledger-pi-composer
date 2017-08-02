@@ -57,6 +57,7 @@ try:
                     GPIO.output(27,GPIO.HIGH)
             except UnicodeDecodeError:
                 # Do nothing with it... you lose sir, good day.... I SAID GOOD DAY SIR!
+                pass
         if p2.poll(1):
             line2 = f2.stdout.readline()
             try:
@@ -68,6 +69,7 @@ try:
                     GPIO.output(6,GPIO.HIGH)
             except UnicodeDecodeError:
                 # Do nothing with it... you lose sir, good day.... I SAID GOOD DAY SIR!
+                pass
 
 except KeyboardInterrupt:
     pass
