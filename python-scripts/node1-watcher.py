@@ -28,7 +28,7 @@ loop.run_forever()
 while True:
     if p.poll(1):
         line = f.stdout.readline()
-        print line
+        print(line)
         asyncio.ensure_future(blink())
         # Flip Amber light on when chain code is installed
         if 'chaincode canonical name: mycc:1.0' in line:
@@ -44,6 +44,7 @@ try:
     while True:
         time.sleep(1)
 except KeyboardInterrupt:
+    loop.stop()
     loop.close()
     GPIO.output(18,GPIO.LOW)
     GPIO.output(17,GPIO.LOW)
