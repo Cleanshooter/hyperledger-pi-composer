@@ -33,7 +33,6 @@ while True:
         line = f.stdout.readline()
         line = line.decode()
         print(line)
-        print("***")
         #asyncio.ensure_future(blink())
         # Flip Amber light on when chain code is installed
         if 'chaincode canonical name: mycc:1.0' in line:
