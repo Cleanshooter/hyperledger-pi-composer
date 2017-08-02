@@ -40,7 +40,7 @@ while True:
         # Flip red on when identified as an anchor peer
         if 'Anchor peers for org Org1MSP are anchor_peers:<host:"peer0.org1.example.com"' in line:
             GPIO.output(27,GPIO.HIGH)
-    time.sleep(1)
+    # time.sleep(0.1)
         
 
 # Catch keyboard exists and kill the lights
