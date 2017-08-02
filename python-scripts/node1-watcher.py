@@ -31,6 +31,7 @@ print("Starting aync loop...")
 while True:
     if p.poll(1):
         line = f.stdout.readline()
+        line = line.decode()
         print(line)
         print("***")
         #asyncio.ensure_future(blink())
