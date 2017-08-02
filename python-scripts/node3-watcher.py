@@ -18,7 +18,7 @@ GPIO.setup(17,GPIO.OUT) # Peer 0 Amber
 #Diagnostic LED test
 GPIO.output(18,GPIO.HIGH)
 GPIO.output(17,GPIO.HIGH)
-time.slepp(1)
+time.sleep(1)
 GPIO.output(18,GPIO.LOW)
 GPIO.output(17,GPIO.LOW)
 
