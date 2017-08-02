@@ -25,12 +25,12 @@ GPIO.setup(6,GPIO.OUT) # Peer 1 Amber
 
 def blink1():
     GPIO.output(18,GPIO.HIGH)
-    time.sleep(0.001)
+    time.sleep(0.01)
     GPIO.output(18,GPIO.LOW)
 
 def blink2():
     GPIO.output(5,GPIO.HIGH)
-    time.sleep(0.001)
+    time.sleep(0.01)
     GPIO.output(5,GPIO.LOW)
 
 print("Starting aync loop...")
@@ -49,12 +49,12 @@ try:
             if 'Anchor peers for org Org1MSP are anchor_peers:<host:"peer0.org1.example.com"' in line:
                 GPIO.output(27,GPIO.HIGH)
         if p2.poll(1):
-            line = f.stdout.readline()
-            line = line.decode()
-            print("Peer1Org1: "+line)
+            line2 = f2.stdout.readline()
+            line2 = line2.decode()
+            print("Peer1Org1: "+line2)
             blink2()
             # Flip Amber light on when chain code is installed
-            if 'chaincode canonical name: mycc:1.0' in line:
+            if 'chaincode canonical name: mycc:1.0' in line2:
                 GPIO.output(6,GPIO.HIGH)
 
 except KeyboardInterrupt:
