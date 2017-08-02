@@ -9,6 +9,11 @@ f = subprocess.Popen(['tail','-F',"/home/jmotacek/hyperledger-pi-composer/logs/p
 p = select.poll()
 p.register(f.stdout)
 
+f2 = subprocess.Popen(['tail','-F',"/home/jmotacek/hyperledger-pi-composer/logs/peer1org1log.txt"],\
+    stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+p2 = select.poll()
+p2.register(f2.stdout)
+
 print("Setting up GPIO...")
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -18,38 +23,43 @@ GPIO.setup(27,GPIO.OUT) # Peer 0 Red
 GPIO.setup(5,GPIO.OUT) # Peer 1 Green
 GPIO.setup(6,GPIO.OUT) # Peer 1 Amber
 
-#@asyncio.coroutine
-def blink():
+def blink1():
     GPIO.output(18,GPIO.HIGH)
-    time.sleep(0.01)
+    time.sleep(0.001)
     GPIO.output(18,GPIO.LOW)
 
+def blink2():
+    GPIO.output(5,GPIO.HIGH)
+    time.sleep(0.001)
+    GPIO.output(5,GPIO.LOW)
+
 print("Starting aync loop...")
-#loop = asyncio.get_event_loop()
-#loop.run_forever()
-while True:
+# Catch keyboard exists and kill the lights
+try:
+    while True:
     if p.poll(1):
         line = f.stdout.readline()
         line = line.decode()
-        print(line)
-        blink()
-        #asyncio.ensure_future(blink())
+        print("Peer0Org1: "+line)
+        blink1()
         # Flip Amber light on when chain code is installed
         if 'chaincode canonical name: mycc:1.0' in line:
             GPIO.output(17,GPIO.HIGH)
         # Flip red on when identified as an anchor peer
         if 'Anchor peers for org Org1MSP are anchor_peers:<host:"peer0.org1.example.com"' in line:
             GPIO.output(27,GPIO.HIGH)
-        
+    if p2.poll(1):
+        line = f.stdout.readline()
+        line = line.decode()
+        print("Peer1Org1: "+line)
+        blink2()
+        # Flip Amber light on when chain code is installed
+        if 'chaincode canonical name: mycc:1.0' in line:
+            GPIO.output(6,GPIO.HIGH)
 
-# Catch keyboard exists and kill the lights
-try:
-    while True:
-        time.sleep(1)
 except KeyboardInterrupt:
+    pass
     print("Stopping")
-    loop.stop()
-    loop.close()
     GPIO.output(18,GPIO.LOW)
     GPIO.output(17,GPIO.LOW)
     GPIO.output(27,GPIO.LOW)
