@@ -22,6 +22,12 @@ GPIO.setup(17,GPIO.OUT) # Peer 0 Amber
 GPIO.setup(27,GPIO.OUT) # Peer 0 Red
 GPIO.setup(5,GPIO.OUT) # Peer 1 Green
 GPIO.setup(6,GPIO.OUT) # Peer 1 Amber
+#Reset for script failures
+GPIO.output(18,GPIO.LOW)
+GPIO.output(17,GPIO.LOW)
+GPIO.output(27,GPIO.LOW)
+GPIO.output(5,GPIO.LOW)
+GPIO.output(6,GPIO.LOW)
 
 def blink1():
     GPIO.output(18,GPIO.HIGH)
