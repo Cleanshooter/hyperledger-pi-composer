@@ -16,12 +16,15 @@ GPIO.setup(27,GPIO.OUT) # Peer 0 Red
 GPIO.setup(5,GPIO.OUT) # Peer 1 Green
 GPIO.setup(6,GPIO.OUT) # Peer 1 Amber
 
+def blink():
+    GPIO.output(18,GPIO.HIGH)
+    time.sleep(0.01)
+    GPIO.output(18,GPIO.LOW)
+
 while True:
     if p.poll(1):
         line = f.stdout.readline()
-        GPIO.output(18,GPIO.HIGH)
-        time.sleep(0.01)
-        GPIO.output(18,GPIO.LOW)
+        blink()
         # Flip Amber light on when chain code is installed
         if 'chaincode canonical name: mycc:1.0' in line:
             GPIO.output(17,GPIO.HIGH)
