@@ -25,12 +25,12 @@ GPIO.setup(6,GPIO.OUT) # Peer 1 Amber
 
 def blink1():
     GPIO.output(18,GPIO.HIGH)
-    time.sleep(0.01)
+    time.sleep(0.005)
     GPIO.output(18,GPIO.LOW)
 
 def blink2():
     GPIO.output(5,GPIO.HIGH)
-    time.sleep(0.01)
+    time.sleep(0.005)
     GPIO.output(5,GPIO.LOW)
 
 print("Starting aync loop...")
@@ -39,23 +39,29 @@ try:
     while True:
         if p.poll(1):
             line = f.stdout.readline()
-            line = line.decode()
-            print("Peer0Org1: "+line)
-            blink1()
-            # Flip Amber light on when chain code is installed
-            if 'chaincode canonical name: mycc:1.0' in line:
-                GPIO.output(17,GPIO.HIGH)
-            # Flip red on when identified as an anchor peer
-            if 'Anchor peers for org Org1MSP are anchor_peers:<host:"peer0.org1.example.com"' in line:
-                GPIO.output(27,GPIO.HIGH)
+            try:
+                line = line.decode()
+                print("Peer0Org1: "+line)
+                blink1()
+                # Flip Amber light on when chain code is installed
+                if 'chaincode canonical name: mycc:1.0' in line:
+                    GPIO.output(17,GPIO.HIGH)
+                # Flip red on when identified as an anchor peer
+                if 'Anchor peers for org Org1MSP are anchor_peers:<host:"peer0.org1.example.com"' in line:
+                    GPIO.output(27,GPIO.HIGH)
+            except UnicodeDecodeError:
+                # Do nothing with it... you lose sir, good day.... I SAID GOOD DAY SIR!
         if p2.poll(1):
             line2 = f2.stdout.readline()
-            line2 = line2.decode()
-            print("Peer1Org1: "+line2)
-            blink2()
-            # Flip Amber light on when chain code is installed
-            if 'chaincode canonical name: mycc:1.0' in line2:
-                GPIO.output(6,GPIO.HIGH)
+            try:
+                line2 = line2.decode()
+                print("Peer1Org1: "+line2)
+                blink2()
+                # Flip Amber light on when chain code is installed
+                if 'chaincode canonical name: mycc:1.0' in line2:
+                    GPIO.output(6,GPIO.HIGH)
+            except UnicodeDecodeError:
+                # Do nothing with it... you lose sir, good day.... I SAID GOOD DAY SIR!
 
 except KeyboardInterrupt:
     pass
