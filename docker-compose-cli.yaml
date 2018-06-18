@@ -1,10 +1,18 @@
 
+#opyright Joe Motacek All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+ 
 version: '3'
-
+ 
 services:
   orderer:
     image: jmotacek/fabric-orderer:armv7l-1.0.7
     environment:
+# The Orderer General stuff is fairly common in the setup for most HL configs
+# I used most of the settings found in other repos
+# You can configure HL to work with out TLS but I feel like that would be pointless since you really needed it in a private blockchain.
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
       - ORDERER_GENERAL_GENESISMETHOD=file
@@ -15,29 +23,40 @@ services:
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
       - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
       - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+# This setting is CRUCIAL!
+# I spent hours digging in to the repos G Code and debugging to figure out this one out...
+# Basically OOTB HL expects to run on a much larger system than a RasPi and the default memory allocation for a container 
+# exceeded what a RasPi actually has.  This setting changes the max limit the system will try to take.
       - CORE_VM_DOCKER_HOSTCONFIG_MEMORY=536870912
+# Here you can designate your own images (if you want to try an 1.1 build for example)
+# NOTE if you did your own builds you'll need to push them to Docker Hub or somewhere that your Swarm workers can find them 
+# Workers won't see images that only exist on your master node (or wherever you built your images)
       - CORE_CHAINCODE_BUILDER=jmotacek/fabric-ccenv:armv7l-1.0.7
       - CORE_CHAINCODE_GOLANG_RUNTIME=jmotacek/fabric-baseos:armv7l-0.3.2
       - CORE_CHAINCODE_CAR_RUNTIME=jmotacek/fabric-baseos:armv7l-0.3.2
       - CORE_CHAINCODE_JAVA=jmotacek/fabric-javaenv:armv7l-1.0.7
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+# I can't remember which of these two is more important but if these aren't set the other nodes won't be able to communicate properly with each other.
+# I think it's both honestly... I know HL needs the hostname for something and the networks alias is needed so the nodes can communicate.
     hostname: orderer.example.com
     networks:
       hyperledger-fabric:
         aliases:
           - orderer.example.com
     volumes:
+# Genesis blocks are created with the generate script which I can cover in a separate tut if anyone is interested.
       - /home/mem/hyperledger-pi-composer/channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
       - /home/mem/hyperledger-pi-composer/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
       - /home/mem/hyperledger-pi-composer/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/:/var/hyperledger/orderer/tls
     ports:
       - 7050:7050
+# You don't necessarily need to constrain where Swarm places your nodes, I wanted to in this so I could do some fun stuff with blinky lights. (See video DEMO)
     deploy:
       placement:
         constraints:
           - node.hostname == hyperledger-swarm-master
     command: orderer
-peer0_org1 :
+    peer0_org1 :
     image: jmotacek/fabric-peer:armv7l-1.0.7
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
@@ -325,7 +344,6 @@ peer0_org1 :
           - node.hostname == hyperledger-swarm-node6
     command: bash -c "peer node start > /home/logs/peer0org3log.txt 2>&1"  
     
-    
     cli:
     image: jmotacek/fabric-tools:armv7l-1.0.7
     tty: true
@@ -374,4 +392,7 @@ peer0_org1 :
 networks:
   hyperledger-fabric:
     external: true
+    
+    
+
 
